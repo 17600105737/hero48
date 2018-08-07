@@ -4,6 +4,9 @@ import Vue from 'vue';
 
 // 导入列表组件
 import HeroList from '../views/hero/List.vue';
+    import HeroAdd from '../views/hero/Add.vue';
+    import HeroEdit from '../views/hero/Edit.vue';
+
 import WeaponList from '../views/weapon/List.vue';
 import EquipList from '../views/equip/List.vue';
 // 挂载路由
@@ -16,6 +19,8 @@ var router = new VueRouter({
     routes: [
         {path:'/',redirect:'/hero'},
         { name: 'hero', path: '/hero', component: HeroList },
+            {name:'heroAdd',path:'/hero/add',component:HeroAdd},
+            {name:'heroEdit',path:'/hero/edit/:id',component:HeroEdit,props:true},
         { name: 'weapon', path: '/weapon', component: WeaponList },
         { name: 'equip', path: '/equip', component: EquipList }
     ]
