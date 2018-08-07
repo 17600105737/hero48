@@ -1,7 +1,8 @@
 <template>
     <div>
         <h2 class="sub-header">英雄列表</h2>
-          <a class="btn btn-success" href="add.html">添加</a>
+          <!-- <a class="btn btn-success" href="add.html">添加</a> -->
+          <router-link class="btn btn-success" to="/hero/add">添加</router-link>
           <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -18,9 +19,10 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.gender }}</td>
                   <td>
-                    <a href="edit.html">edit</a>
+                    <!-- <a href="edit.html">edit</a> -->
+                    <router-link :to="'/hero/edit/'+item.id">edit</router-link>
                     &nbsp;&nbsp;
-                    <a href="javascript:window.confirm('Are you sure?')">delete</a>
+                    <a @click.prevent="handelDel(item.id)" href="javascript:void(0)">delete</a>
                   </td>
                 </tr>
               </tbody>
@@ -39,16 +41,38 @@ export default {
     };
   },
   created() {
-    axios
-      .get("http://localhost:3000/heroes")
-      .then(response => {
-        if (response.status === 200) {
-          this.list = response.data
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.loadData();
+  },
+  methods: {
+    loadData() {
+      axios
+        .get("http://localhost:3000/heroes")
+        .then(response => {
+          if (response.status === 200) {
+            this.list = response.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handelDel(id) {
+      if (!confirm("Are you sure")) {
+        return;
+      }
+      axios
+        .delete(`http://localhost:3000/heroes/${id}`)
+        .then((response) => {
+          if (response.status === 200) {
+            this.loadData();
+          } else {
+            alert("删除失败");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>
